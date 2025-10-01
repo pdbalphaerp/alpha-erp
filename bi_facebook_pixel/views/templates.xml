@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="website_header_inherite_facebook_pixel" inherit_id="website.layout" active="True"
+                  customize_show="True" name="Integration code of Facebook Pixel">
+            <xpath expr="//header" position="inside">
+                <!-- Meta Pixel Code -->
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script>
+                     $.ajax({
+                    url: '/get_pixel_id',
+                    method: 'GET',
+                    dataType: 'json',
+                     }).then(function (result) {
+                        if(result){
+                            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+                            n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+                            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+                            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+                            document,'script','https://connect.facebook.net/en_US/fbevents.js');
+
+                            fbq('init', result);
+                            fbq('track', "PageView");
+
+                    }else{
+                        alert("Please configure Facebook Pixel ID...!")
+                    }
+                    })
+
+
+               </script>
+                <noscript>
+                    <t t-set="vardd" t-value="request.env['ir.http'].sudo().check_fb_pixel_id()"/>
+                    <img height="1" width="1" style="display:none"
+                         t-attf-src="https://www.facebook.com/tr?id=#{vardd}&amp;ev=PageView&amp;noscript=1"
+                    />
+                </noscript>
+                <!-- End Meta Pixel Code -->
+            </xpath>
+        </template>
+
+        <record model="ir.ui.view" id="view_website_sale_config_settings_inherited">
+            <field name="name">website.config.settings.inherited</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='website_info_settings']" position="after">
+                    <h2>Facebook Pixel</h2>
+                    <div class="row mt16 o_settings_container" id="facebook_pixel_settings">
+                        <div class="col-xs-12 col-md-6 o_setting_box" id="facebook_pixel_settings">
+                            <div class="o_setting_left_pane">
+                            </div>
+                            <div class="o_setting_right_pane">
+                                <label class="o_light_label" string="Facebook Pixel Configuration" for="fb_pixel_id"/>
+                                <div class="mt8">
+                                    <field name="fb_pixel_id" placeholder="Enter Facebook Pixel ID..!"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
