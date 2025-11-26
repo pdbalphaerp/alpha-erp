@@ -29,7 +29,7 @@ class Config3CX(models.TransientModel):
         base_url = self.env['ir.config_parameter'].get_param('web.base.url')
         base_url = base_url.rstrip('/') + '/'
         config_template = Markup('<?xml version="1.0"?>' + "\n")
-        config_template += self.env['ir.qweb']._render('nalios_3cx_full.3cx_template', {'base_url': base_url, 'api_key': api_key})
+        config_template += self.env['ir.qweb']._render('alpha_3cx_full.3cx_template', {'base_url': base_url, 'api_key': api_key})
         self.configuration = base64.encodebytes(config_template.encode('utf-8'))
         return {
             'type': 'ir.actions.act_window',
